@@ -45,9 +45,13 @@ I started the project for this tutorial by executing;
     $ cd hand-pallet
     $ lein pallet project-init
 
-This adds our starting project.clj, and pallet.clj in the root, which
+This adds our starting [project.clj], and [pallet.clj] in the root, which
 I have since modified to add dependencies for pallet and specify that
 pallet should use virtualbox as it's provider by way of vmfest.
+
+**IMPORTANT** The :groups and require reference in pallet.clj explains
+  to pallet-lein which group-spec it should adjust by default in `lein
+  pallet up`.
 
 At this point you can execute:
 
@@ -61,7 +65,7 @@ You may need to adjust the :default-network-type and
 :default-bridged-interface per the documentation at
 https://github.com/pallet/pallet-vmfest#configuration.
 
-To download a debian vmfest image execute:
+To download a debian vmfest image run:
 
     $ lein pallet add-vmfest-image \
         https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
