@@ -67,38 +67,6 @@ Midway though the output I encounter this error:
 >
 > Run pallet help $TASK for details.
 
-### Lein Pallet commands without a project.clj
-
-Executing some lein pallet sub-commands outside of the project results
-in the following error:
-
-```
-$ cd ~
-$ lein pallet up
-#
-# A fatal error has been detected by the Java Runtime Environment:
-#
-#  SIGSEGV (0xb) at pc=0x00007fedbc809dcb, pid=25232, tid=140659038054144
-#
-# JRE version: 6.0_26-b03
-# Java VM: Java HotSpot(TM) 64-Bit Server VM (20.1-b02 mixed mode linux-amd64 compressed oops)
-# Problematic frame:
-# V  [libjvm.so+0x516dcb]  unsigned+0xfb
-#
-# An error report file with more information is saved as:
-# /home/clgc/code/hs_err_pid25232.log
-#
-# If you would like to submit a bug report, please visit:
-#   http://java.sun.com/webapps/bugreport/crash.jsp
-#
-Subprocess failed
-```
-
-This seems to apply to the pallet images, nodes, and converge options.
-While clearly the command can't execute without the project.clj config,
-it seems like a helpful error message instead of a segfault would be
-useful.
-
 ### Lein pallet up
 
     $ lein pallet up
