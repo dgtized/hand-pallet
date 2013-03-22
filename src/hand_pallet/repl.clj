@@ -7,8 +7,8 @@
             vmfest.manager))
 
 (comment
-  ;; Download the debian-image, and wait a while for it to install.
-  ;; This should not be necessary if add-vmfest-image worked.
+  ;; If the lein pallet add-vmfest-image command failed we can install
+  ;; the image using the repl. This takes a while to download.
   (pallet.compute.vmfest/add-image
    hpc/vmfest-service
    "https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz")
