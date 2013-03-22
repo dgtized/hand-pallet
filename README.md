@@ -9,7 +9,7 @@ single Debian node in virtualbox, with an admin user so we can ssh
 into it.
 
 A lot of this is cribbed from the following places, but I'm trying to
-make things work with leiningen 2.0, virtualbox 4.2, the pre-release
+make things work with leiningen 2.1.1, virtualbox 4.2, the pre-release
 pallet 0.8 snapshots, and document the process and problems in one
 location.
 
@@ -25,7 +25,8 @@ the correct approach is.
 Before we proceed go install
 [leiningen](https://github.com/technomancy/leiningen), and install
 [virtualbox](https://www.virtualbox.org/wiki/Downloads). I ran this on
-an Ubuntu box, so was unable to use the XPCOM interface.
+an Ubuntu box, so was unable to use the XPCOM interface, thus the
+dependency on vboxjws.
 
 I installed VirtualBox previously for Vagrant, so I removed
 `~/VirtualBox VMs`, ran `VirtualBox` and removed existing VMs. I had
@@ -48,13 +49,6 @@ fault but added to my confusion. I will submit bug reports once I'm
 certain which projects they are associated with, or that they are
 actual bugs. I'm documenting them here in case someone else encounters
 them.
-
-I know the addition of a `:pallet` profile to leiningen is documented
-in a few places, but I couldn't find a good overview. For instance I
-put the dependency on `vboxjws` in my project dependency block but
-[pallet-lein](https://github.com/pallet/pallet-lein#default-pallet-dependencies)
-documents putting it in the dependencies for `:pallet` profile. My
-guess is this is much of the cause of my `lein pallet` difficulties.
 
 ### Lein Pallet Help
 
