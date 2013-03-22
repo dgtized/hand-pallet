@@ -46,24 +46,27 @@
 ;; Specify a node-spec for pallet to match to our images provided by vmfest
 (def debian-node (pallet.core/node-spec :image {:os-family :debian}))
 
+(def debian-group
+  (pallet.core/group-spec "hand-pallet"
+                          :count 1
+                          :node-spec debian-node
+                          :phases {:bootstrap automated-admin-user}))
+
 ;; Spin up one hand-pallet node using the matching node. Since this is
 ;; a group-spec, it will be labeled hand-pallet-0 in the VirtualBox
 ;; gui. Note that the let and wait-for are just so we can eval this
 ;; whole buffer and know we are in a clean state once the ip address
 ;; prints.
-(let [op
-      (pallet.core/converge
-       (pallet.core/group-spec "hand-pallet"
-                               :count 1
-                               :node-spec debian-node
-                               :phases {:bootstrap automated-admin-user})
-       :compute vmfest-service)]
-  (pallet.algo.fsmop/wait-for op)
-  ;; Check you *nrepl-server* log, but we should have a running
-  ;; machine, query the nodes to verify this.
-  (println (pallet.compute/nodes vmfest-service))
-  ;; => (hand-pallet-0 hand-pallet	public: 192.168.1.212)
-  )
+(comment
+  (let [op
+        (pallet.core/converge (assoc debian-group :count 1)
+                              :compute vmfest-service)]
+    (pallet.algo.fsmop/wait-for op)
+    ;; Check you *nrepl-server* log, but we should have a running
+    ;; machine, query the nodes to verify this.
+    (println (pallet.compute/nodes vmfest-service))
+    ;; => (hand-pallet-0 hand-pallet	public: 192.168.1.212)
+    ))
 
 ;; After finding the public IP from the above command, we should now
 ;; be able to ssh in using password vmfest.
@@ -74,9 +77,7 @@
 ;; In order to remove the node we can execute the following code that
 ;; we have commented out.
 (comment
-  (pallet.core/converge
-   (pallet.core/group-spec "hand-pallet" :count 0)
-   :compute vmfest-service))
+  (pallet.core/converge (assoc debian-group :count 0) :compute vmfest-service))
 
 ;; Note that executing:
 ;;
