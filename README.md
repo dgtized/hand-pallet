@@ -53,10 +53,12 @@ At this point you can execute:
 
     $ lein pallet config
 
-But I updated this config to what is in pallet-config.clj, so copy
-that to ~/.pallet/config.clj. You may need to adjust the
-:default-network-type and :default-bridged-interface per the
-documentation at
+But I updated this config to what is in pallet-config.clj, so:
+
+    $ cp pallet-config.clj ~/.pallet/config.clj
+
+You may need to adjust the :default-network-type and
+:default-bridged-interface per the documentation at
 https://github.com/pallet/pallet-vmfest#configuration.
 
 To download a debian vmfest image execute:
