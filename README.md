@@ -39,8 +39,35 @@ In a separate shell run
     $ VBoxManage setproperty websrvauthlibrary null # first time only
     $ vboxwebsrv -t0
 
+I started the project for this tutorial by executing;
+
+    $ lein new hand-pallet
+    $ cd hand-pallet
+    $ lein pallet project-init
+
+This adds our starting project.clj, and pallet.clj in the root, which
+I have since modified to add dependencies for pallet and specify that
+pallet should use virtualbox as it's provider by way of vmfest.
+
+At this point you can execute:
+
+    $ lein pallet config
+
+But I updated this config to what is in pallet-config.clj, so copy
+that to ~/.pallet/config.clj. You may need to adjust the
+:default-network-type and :default-bridged-interface per the
+documentation at
+https://github.com/pallet/pallet-vmfest#configuration.
+
+To download a debian vmfest image execute:
+
+    $ lein pallet add-vmfest-image \
+        https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
+
 Open a repl in the project using `lein repl`, or your nrepl client of
-choice and follow along in the [code](src/hand_pallet/core.clj).
+choice and follow along with the code in
+[repl](src/hand_pallet/repl.clj) and referencing
+[core](src/hand_pallet/core.clj).
 
 ## Errors
 
