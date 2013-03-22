@@ -9,4 +9,7 @@
                  [org.clojars.tbatchelli/vboxjws "4.2.6"]]
   :repositories {"sonatype"
                  "http://oss.sonatype.org/content/repositories/releases"}
-  :plugins [[com.palletops/pallet-lein "0.6.0-beta.7"]])
+  :plugins [[com.palletops/pallet-lein "0.6.0-beta.7"]]
+  :profiles
+  {:pallet
+   {:jvm-opts ["-Dvbox.home=/usr/lib/virtualbox"]}})
