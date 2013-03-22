@@ -99,19 +99,6 @@ While clearly the command can't execute without the project.clj config,
 it seems like a helpful error message instead of a segfault would be
 useful.
 
-### Lein pallet add-service
-
-Supposedly after running lein pallet project-init you can add a vbox
-service, but I encountered the following error:
-
-```
-$ lein pallet add-service vbox vmfest
-Wrong number of args (4) passed to: add-service$add-service
-Add a service provider definition to your pallet configuration.
-This will create ~/.pallet/services/service-name.clj
-  lein pallet add-service service-name provider-name? identity? credential?
-```
-
 ### Lein pallet up
 
     $ lein pallet up
