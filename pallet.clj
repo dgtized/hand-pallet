@@ -1,3 +1,5 @@
+;; Give access to the namespace where debian-goup is specified so it
+;; can be used below
 (require
  '[hand-pallet.core :refer [debian-group]])
 
@@ -7,4 +9,7 @@
               {:image {:os-family :debian
                        :os-64-bit true}}
               :selectors #{:default}}}
+  ;; :groups specifies to `lein pallet` which nodes to converge by
+  ;; default when executing `lein pallet up`.
   :groups [debian-group])
+

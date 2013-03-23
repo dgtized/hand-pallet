@@ -22,10 +22,10 @@ is what I have documented thus far. *WARNING* I am likely cargo
 culting in a number of places and am hoping others can explain what
 the correct approach is.
 
-Before we proceed go install
-[leiningen](https://github.com/technomancy/leiningen), and install
-[virtualbox](https://www.virtualbox.org/wiki/Downloads). I ran this on
-an Ubuntu box, so was unable to use the XPCOM interface, thus the
+Before proceeding install
+[leiningen](https://github.com/technomancy/leiningen), and
+[virtualbox](https://www.virtualbox.org/wiki/Downloads). This was run
+on an Ubuntu box, so the XPCOM interface is broken, hence the
 dependency on vboxjws.
 
 In a separate shell run
@@ -33,41 +33,28 @@ In a separate shell run
     $ VBoxManage setproperty websrvauthlibrary null # first time only
     $ vboxwebsrv -t0
 
-I started the project for this tutorial by executing;
+Take a look at the configuration in [project.clj](project.clj), and
+[pallet.clj](pallet.clj) in the project root, as they specify which
+dependencies, default provider, image and group to install.
 
-    $ lein new hand-pallet
-    $ cd hand-pallet
-    $ lein pallet project-init
-
-This adds our starting [project.clj](project.clj), and
-[pallet.clj](pallet.clj) in the root, which I have since modified to
-add dependencies for pallet and specify that pallet should use
-virtualbox as it's provider by way of vmfest.
-
-**IMPORTANT** The :groups and require reference in pallet.clj explains
-  to pallet-lein which group-spec it should adjust by default in `lein
-  pallet up`.
-
-At this point you can execute:
+Specify a `~/.pallet/config.clj` using `lein pallet config` to
+generate but then copy the one provided in the project from
+[pallet-config.clj](pallet-config.clj).
 
     $ lein pallet config
-
-But I updated this config to what is in pallet-config.clj, so:
-
     $ cp pallet-config.clj ~/.pallet/config.clj
 
-You may need to adjust the `:default-network-type`,
+Adjustments to the `:default-network-type`,
 `:default-local-interface`, and `:default-bridged-interface` per the
-documentation at
-https://github.com/pallet/pallet-vmfest#configuration.
+documentation at https://github.com/pallet/pallet-vmfest#configuration
+may be required.
 
 To download a debian vmfest image run:
 
     $ lein pallet add-vmfest-image \
         https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
 
-We can boot the vm and add our user as an admin on the vm by
-executing:
+Boot up the vm:
 
 ```
 $ lein pallet up
@@ -77,17 +64,18 @@ $ lein pallet up
 | 192.168.56.102 |             | hand-pallet-0 | hand-pallet |        |
 ```
 
-After finding the public IP from the above command, we can ssh into
-the node as the `debian-spec` group specification in
-[core](src/hand_pallet/core.clj) installs us as an admin user.
+After finding the public IP from the above command, ssh into the node.
+The `debian-spec` group specification in
+[core](src/hand_pallet/core.clj) installs an admin user with matching
+username with `automated-admin-user`.
 
     $ ssh 192.168.56.102
 
-We can also use the default vmfest user with password vmfest
+The default vmfest user with password vmfest also works
 
     $ ssh vmfest@192.168.56.102
 
-Once we are done, we can destroy the node with:
+Once complete, destroy the vm with:
 
     $ lein pallet down
 
@@ -132,6 +120,16 @@ this, and then restarted `vboxwebsrv -t0` after clearing out existing
 nodes. Prior to that I could not execute `lein pallet up` as it hung
 waiting for an IP. This cascaded into a locking exception when it
 failed to remove the node it could not connect to.
+
+## Project initialization
+
+To initialize another project as this one has, the following commands
+were executed. The comments explain which files get a default config
+from each command.
+
+    $ lein new hand-pallet      # project.clj
+    # cd hand-pallet
+    $ lein pallet project-init  # pallet.clj
 
 ## License
 
