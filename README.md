@@ -34,6 +34,13 @@ also previously made use of vmfest, and much of the metadata is stored
 in `.vmfest`, so I removed that as well. I don't think this was
 necessary but sometimes it's helpful to start with a clean slate.
 
+**IMPORTANT** I had stale networking configuration in
+  `~/.VirtualBox/VirtualBox.xml`. So I ran `rm -rf ~/.VirtualBox` to
+  fix this. Prior to that I could not execute `lein pallet up` as it
+  hung waiting for an IP and then when that failed threw a locking
+  exception when it failed to remove the node because it was unable to
+  connect.
+
 In a separate shell run
 
     $ VBoxManage setproperty websrvauthlibrary null # first time only
@@ -45,9 +52,10 @@ I started the project for this tutorial by executing;
     $ cd hand-pallet
     $ lein pallet project-init
 
-This adds our starting [project.clj], and [pallet.clj] in the root, which
-I have since modified to add dependencies for pallet and specify that
-pallet should use virtualbox as it's provider by way of vmfest.
+This adds our starting [project.clj](project.clj), and
+[pallet.clj](pallet.clj) in the root, which I have since modified to
+add dependencies for pallet and specify that pallet should use
+virtualbox as it's provider by way of vmfest.
 
 **IMPORTANT** The :groups and require reference in pallet.clj explains
   to pallet-lein which group-spec it should adjust by default in `lein
@@ -61,8 +69,9 @@ But I updated this config to what is in pallet-config.clj, so:
 
     $ cp pallet-config.clj ~/.pallet/config.clj
 
-You may need to adjust the :default-network-type and
-:default-bridged-interface per the documentation at
+You may need to adjust the :default-network-type,
+:default-local-interface, and :default-bridged-interface per the
+documentation at
 https://github.com/pallet/pallet-vmfest#configuration.
 
 To download a debian vmfest image run:
@@ -70,8 +79,30 @@ To download a debian vmfest image run:
     $ lein pallet add-vmfest-image \
         https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
 
-Open a repl in the project using `lein repl`, or your nrepl client of
-choice and follow along with the code in
+At this point we can run:
+
+```
+$ lein pallet up
+19:20:58.238 [operate-13] WARN  clj-ssh.ssh - Permanently added '192.168.56.102' (RSA) to the list of known hosts.
+
+|    :primary-ip | :private-ip |     :hostname | :group-name | :roles |
+|----------------+-------------+---------------+-------------+--------|
+| 192.168.56.102 |             | hand-pallet-0 | hand-pallet |        |
+```
+
+After finding the public IP from the above command, it should be
+possible to ssh into the node as the debian-spec in
+[core](src/hand_pallet/core.clj) specifies that we add an automated
+admin user.
+
+    $ ssh 192.168.56.102
+
+Once we are done, we can destroy the node with:
+
+    $ lein pallet down
+
+Alternatively you can open a repl in the project using `lein repl`, or
+your nrepl client of choice and follow along with the code in
 [repl](src/hand_pallet/repl.clj) and referencing
 [core](src/hand_pallet/core.clj).
 

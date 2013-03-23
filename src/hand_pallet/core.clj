@@ -11,17 +11,12 @@
 ;; Specify a node-spec for pallet to match to our images provided by vmfest
 (def debian-node (pallet.core/node-spec :image {:os-family :debian}))
 
+;; Given node-spec to find a matching image from the provider, we can
+;; specify a group of 1 and install our ssh-key to a matching user.
 (def debian-group
   (pallet.core/group-spec "hand-pallet"
                           :count 1
                           :node-spec debian-node
                           :phases {:bootstrap automated-admin-user}))
-
-;; Note that executing:
-;;
-;;   $ lein pallet down
-;;
-;; Also appears to accomplish this, unfortunately not sure how to
-;; get lein pallet up to work equivalently.
 
 
