@@ -79,7 +79,7 @@ To query the running nodes
 $ lein pallet nodes
 |    :primary-ip | :private-ip |     :hostname | :group-name | :roles |
 |----------------+-------------+---------------+-------------+--------|
-| 192.168.56.103 |             | hand-pallet-0 | hand-pallet |        |
+| 192.168.56.102 |             | hand-pallet-0 | hand-pallet |        |
 ```
 
 *NOTE:* This query overlaps with Vagrant and anything else using
