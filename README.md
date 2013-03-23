@@ -73,6 +73,18 @@ The default vmfest user baked into the VM also works
 
     $ ssh vmfest@192.168.56.102 # using password vmfest
 
+To query the running nodes
+
+```
+$ lein pallet nodes
+|    :primary-ip | :private-ip |     :hostname | :group-name | :roles |
+|----------------+-------------+---------------+-------------+--------|
+| 192.168.56.103 |             | hand-pallet-0 | hand-pallet |        |
+```
+
+*NOTE:* This query overlaps with Vagrant and anything else using
+ VirtualBox, so it may show nodes not managed by Pallet.
+
 Once complete, destroy the VM with:
 
     $ lein pallet down
