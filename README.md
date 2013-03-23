@@ -90,7 +90,7 @@ commands. The comments explain which files are provided by each
 command.
 
     $ lein new hand-pallet      # project.clj
-    # cd hand-pallet
+    $ cd hand-pallet
     $ lein pallet project-init  # pallet.clj
 
 ## Errors
@@ -108,6 +108,7 @@ them.
 Midway though the output I encounter this error:
 
 > version          - Print Pallet's version to standard out.
+>
 > vmfest-script failed to load: java.lang.RuntimeException: No such var: compute/compute-service, compiling:(pallet/task/vmfest_script.clj:18)
 >
 > Run pallet help $TASK for details.
