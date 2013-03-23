@@ -69,8 +69,8 @@ But I updated this config to what is in pallet-config.clj, so:
 
     $ cp pallet-config.clj ~/.pallet/config.clj
 
-You may need to adjust the :default-network-type,
-:default-local-interface, and :default-bridged-interface per the
+You may need to adjust the `:default-network-type`,
+`:default-local-interface`, and `:default-bridged-interface` per the
 documentation at
 https://github.com/pallet/pallet-vmfest#configuration.
 
@@ -79,23 +79,26 @@ To download a debian vmfest image run:
     $ lein pallet add-vmfest-image \
         https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
 
-At this point we can run:
+We can boot the vm and add our admin user by executing:
 
 ```
 $ lein pallet up
 19:20:58.238 [operate-13] WARN  clj-ssh.ssh - Permanently added '192.168.56.102' (RSA) to the list of known hosts.
-
 |    :primary-ip | :private-ip |     :hostname | :group-name | :roles |
 |----------------+-------------+---------------+-------------+--------|
 | 192.168.56.102 |             | hand-pallet-0 | hand-pallet |        |
 ```
 
-After finding the public IP from the above command, it should be
-possible to ssh into the node as the debian-spec in
-[core](src/hand_pallet/core.clj) specifies that we add an automated
-admin user.
+After finding the public IP from the above command, we can ssh into
+the node as the `debian-spec` group specification in
+[core](src/hand_pallet/core.clj) installs an admin user with our
+username.
 
     $ ssh 192.168.56.102
+
+We can also use the default vmfest user with password vmfest
+
+    $ ssh vmfest@192.168.56.102
 
 Once we are done, we can destroy the node with:
 
