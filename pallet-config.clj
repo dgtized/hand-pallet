@@ -3,4 +3,5 @@
 (defpallet
   :services {:vmfest {:provider "vmfest"
                       :default-network-type :local
-                      :default-bridged-interface "vboxnet0"}})
+                      :default-bridged-interface "wlan1"
+                      :default-local-interface "vboxnet0"}})
