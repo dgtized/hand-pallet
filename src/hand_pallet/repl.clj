@@ -3,7 +3,6 @@
             pallet.core
             pallet.compute
             pallet.compute.vmfest
-            pallet.algo.fsmop
             vmfest.manager))
 
 (comment
@@ -19,15 +18,14 @@
 
   ;; Spin up one hand-pallet vm using the matching node. Since this is
   ;; a group-spec, it will be labeled hand-pallet-0 in the VirtualBox
-  ;; gui. Note that the let and wait-for are just so we block until we
-  ;; are in a clean state once the ip address prints.
-  (let [op
-        (pallet.core/converge (assoc hpc/debian-group :count 1)
-                              :compute hpc/vmfest-service)]
-    (pallet.algo.fsmop/wait-for op)
-    ;; Check you *nrepl-server* log, but we should have a running
-    ;; machine, query the nodes to verify this.
-    (println (pallet.compute/nodes hpc/vmfest-service)))
+  ;; gui.
+  (pallet.core/converge (assoc hpc/debian-group :count 1)
+                        :compute hpc/vmfest-service)
+  ;; Now we wait for hand-pallet-0 to boot
+
+  ;; Check your *nrepl-server* log, but we should have a running
+  ;; machine, query the nodes to verify this.
+  (pallet.compute/nodes hpc/vmfest-service)
   ;; => (hand-pallet-0 hand-pallet	public: 192.168.1.212)
 
   ;; After finding the public IP from the above command, we should now
@@ -38,7 +36,6 @@
 
   ;; In order to remove the node we can execute the following code that
   ;; we have commented out.
-
   (pallet.core/converge (assoc hpc/debian-group :count 0)
                         :compute hpc/vmfest-service)
   )
