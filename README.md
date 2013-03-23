@@ -28,19 +28,6 @@ Before we proceed go install
 an Ubuntu box, so was unable to use the XPCOM interface, thus the
 dependency on vboxjws.
 
-I installed VirtualBox previously for Vagrant, so I removed
-`~/VirtualBox VMs`, ran `VirtualBox` and removed existing VMs. I had
-also previously made use of vmfest, and much of the metadata is stored
-in `.vmfest`, so I removed that as well. I don't think this was
-necessary but sometimes it's helpful to start with a clean slate.
-
-**IMPORTANT** I had stale networking configuration in
-  `~/.VirtualBox/VirtualBox.xml`. So I ran `rm -rf ~/.VirtualBox` to
-  fix this. Prior to that I could not execute `lein pallet up` as it
-  hung waiting for an IP and then when that failed threw a locking
-  exception when it failed to remove the node because it was unable to
-  connect.
-
 In a separate shell run
 
     $ VBoxManage setproperty websrvauthlibrary null # first time only
@@ -79,7 +66,8 @@ To download a debian vmfest image run:
     $ lein pallet add-vmfest-image \
         https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
 
-We can boot the vm and add our admin user by executing:
+We can boot the vm and add our user as an admin on the vm by
+executing:
 
 ```
 $ lein pallet up
@@ -91,8 +79,7 @@ $ lein pallet up
 
 After finding the public IP from the above command, we can ssh into
 the node as the `debian-spec` group specification in
-[core](src/hand_pallet/core.clj) installs an admin user with our
-username.
+[core](src/hand_pallet/core.clj) installs us as an admin user.
 
     $ ssh 192.168.56.102
 
@@ -128,13 +115,23 @@ Midway though the output I encounter this error:
 >
 > Run pallet help $TASK for details.
 
-### Lein pallet up
+### Lein pallet up hangs
 
-    $ lein pallet up
+When I first wrote this tutorial I had problems with `lein pallet up`
+hanging.
 
-Just seems to hang and then complains about adjusting locked nodes.
-I'm guessing I need to provide a hook for a specific groupspec to
-converge, or converge first but I'm confused by this.
+I installed VirtualBox previously for Vagrant, so I removed
+`~/VirtualBox VMs`, ran `VirtualBox` and removed existing VMs. I had
+also previously made use of vmfest, and much of the metadata is stored
+in `.vmfest`, so I removed that as well. I don't think this was
+necessary but sometimes it's helpful to start with a clean slate.
+
+**IMPORTANT** However, I did have stale networking configuration in
+`~/.VirtualBox/VirtualBox.xml`. So I ran `rm -rf ~/.VirtualBox` to fix
+this, and then restarted `vboxwebsrv -t0` after clearing out existing
+nodes. Prior to that I could not execute `lein pallet up` as it hung
+waiting for an IP. This cascaded into a locking exception when it
+failed to remove the node it could not connect to.
 
 ## License
 
