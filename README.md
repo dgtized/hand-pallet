@@ -1,32 +1,28 @@
 # hand-pallet
 
-A pallet tutorial using virtualbox as a provider.
+A simple pallet tutorial using virtualbox as a provider.
 
-## Usage
+## Preface
 
-This is a work in progress tutorial, thus far it just brings up a
-single Debian node in virtualbox, with an admin user so we can ssh
-into it.
+In this tutorial, pallet will define a simple Debian VM using
+Virtualbox as a "cloud provider" and install an admin user on the VM
+with a matching username.
 
-A lot of this is cribbed from the following places, but I'm trying to
-make things work with leiningen 2.1.1, virtualbox 4.2, the pre-release
-pallet 0.8 snapshots, and document the process and problems in one
+This uses leiningen 2.1.1, virtualbox 4.2, and the latest published
+pallet jar files. At the time of this writing, pallet 0.8 is in
+snapshot prior to release. A lot of this is cribbed from the following
+places, but I wanted to document the process and problems in one
 location.
 
  * https://github.com/pallet/pallet-vmfest
  * https://github.com/tbatchelli/vmfest
  * https://gist.github.com/tbatchelli/867526/raw/2e1238b8ddc7c888403614f0b906cf077380bf15/pallet-vmfest.md
+ * https://github.com/pepijndevos/irc-deploy
 
-I hope to proceed this tutorial beyond what is listed there, but this
-is what I have documented thus far. *WARNING* I am likely cargo
-culting in a number of places and am hoping others can explain what
-the correct approach is.
+## Usage
 
-Before proceeding install
-[leiningen](https://github.com/technomancy/leiningen), and
-[virtualbox](https://www.virtualbox.org/wiki/Downloads). This was run
-on an Ubuntu box, so the XPCOM interface is broken, hence the
-dependency on vboxjws.
+Install [leiningen](https://github.com/technomancy/leiningen), and
+[virtualbox](https://www.virtualbox.org/wiki/Downloads).
 
 In a separate shell run
 
@@ -35,7 +31,9 @@ In a separate shell run
 
 Take a look at the configuration in [project.clj](project.clj), and
 [pallet.clj](pallet.clj) in the project root, as they specify which
-dependencies, default provider, image and group to install.
+dependencies, default provider, image and group to install. This was
+run on an Ubuntu box, so the VirtualBox XPCOM interface is broken,
+hence the dependency on vboxjws.
 
 Specify a `~/.pallet/config.clj` using `lein pallet config` to
 generate but then copy the one provided in the project from
@@ -49,7 +47,7 @@ Adjustments to the `:default-network-type`,
 documentation at https://github.com/pallet/pallet-vmfest#configuration
 may be required.
 
-To download a debian vmfest image run:
+Download the debian the image:
 
     $ lein pallet add-vmfest-image \
         https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
@@ -71,18 +69,29 @@ username with `automated-admin-user`.
 
     $ ssh 192.168.56.102
 
-The default vmfest user with password vmfest also works
+The default vmfest user baked into the VM also works
 
-    $ ssh vmfest@192.168.56.102
+    $ ssh vmfest@192.168.56.102 # using password vmfest
 
-Once complete, destroy the vm with:
+Once complete, destroy the VM with:
 
     $ lein pallet down
 
-Alternatively you can open a repl in the project using `lein repl`, or
-your nrepl client of choice and follow along with the code in
-[repl](src/hand_pallet/repl.clj) and referencing
-[core](src/hand_pallet/core.clj).
+## REPL
+
+Run this tutorial in a repl by following along in
+[repl.clj](src/hand_pallet/repl.clj) and referencing
+[core.clj](src/hand_pallet/core.clj).
+
+## Initializing Another Pallet Project
+
+To initialize another project like this one, execute the following
+commands. The comments explain which files are provided by each
+command.
+
+    $ lein new hand-pallet      # project.clj
+    # cd hand-pallet
+    $ lein pallet project-init  # pallet.clj
 
 ## Errors
 
@@ -120,16 +129,6 @@ this, and then restarted `vboxwebsrv -t0` after clearing out existing
 nodes. Prior to that I could not execute `lein pallet up` as it hung
 waiting for an IP. This cascaded into a locking exception when it
 failed to remove the node it could not connect to.
-
-## Project initialization
-
-To initialize another project as this one has, the following commands
-were executed. The comments explain which files get a default config
-from each command.
-
-    $ lein new hand-pallet      # project.clj
-    # cd hand-pallet
-    $ lein pallet project-init  # pallet.clj
 
 ## License
 
