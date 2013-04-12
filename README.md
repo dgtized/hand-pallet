@@ -161,10 +161,10 @@ failed to remove the node it could not connect to.
 
 ### lein pallet add-vmfest-image fails when /tmp is full
 
-It's possible to fix this area by either expanding `/tmp`, specifying
-the temp directory java uses with the java property `java.io.tmpdir`,
-or by unpacking the image on another drive an then installing the
-unpacked version as follows:
+It's possible to fix this by expanding `/tmp`, specifying the temp
+directory java uses with the java property `java.io.tmpdir`, or by
+unpacking the image on another drive and then installing the unpacked
+version as follows:
 
 ```
 $ wget https://s3.amazonaws.com/vmfest-images/ubuntu-12.04.{vdi.gz,meta}
