@@ -47,10 +47,15 @@ Adjustments to the `:default-network-type`,
 documentation at https://github.com/pallet/pallet-vmfest#configuration
 may be required.
 
-Download the debian the image:
+Download a debian or ubuntu image:
 
     $ lein pallet add-vmfest-image \
         https://s3.amazonaws.com/vmfest-images/debian-6.0.2.1-64bit-v0.3.vdi.gz
+
+or
+
+    $ lein pallet add-vmfest-image \
+        https://s3.amazonaws.com/vmfest-images/ubuntu-12.04.vdi.gz
 
 Boot up the vm:
 
@@ -94,6 +99,17 @@ Once complete, destroy the VM with:
 Run this tutorial in a repl by following along in
 [repl.clj](src/hand_pallet/repl.clj) and referencing
 [core.clj](src/hand_pallet/core.clj).
+
+## Switching between Ubuntu and Debian Image
+
+By using selectors, it is possible to select which image to use:
+
+    $ lein pallet up -s ubuntu
+    $ lein pallet down
+
+This is kind of a hack, it's not possible to bring up one of each
+using this method. If a node is already created it appears to ignore
+the selector. This is why down works without specifying a selector.
 
 ## Initializing Another Pallet Project
 
@@ -142,6 +158,19 @@ this, and then restarted `vboxwebsrv -t0` after clearing out existing
 nodes. Prior to that I could not execute `lein pallet up` as it hung
 waiting for an IP. This cascaded into a locking exception when it
 failed to remove the node it could not connect to.
+
+### lein pallet add-vmfest-image fails when /tmp is full
+
+It's possible to fix this area by either expanding `/tmp`, specifying
+the temp directory java uses with the java property `java.io.tmpdir`,
+or by unpacking the image on another drive an then installing the
+unpacked version as follows:
+
+```
+$ wget https://s3.amazonaws.com/vmfest-images/ubuntu-12.04.{vdi.gz,meta}
+$ gunzip ubuntu.12.04.vdi.gz
+$ lein pallet add-vmfest-image ./ubuntu-12.04.vdi
+```
 
 ## License
 

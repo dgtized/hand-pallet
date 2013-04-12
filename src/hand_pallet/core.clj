@@ -9,14 +9,14 @@
 (def vmfest-service (pallet.compute/instantiate-provider :vmfest))
 
 ;; Specify a node-spec for pallet to match to our images provided by vmfest
-(def debian-node (pallet.core/node-spec :image {:os-family :debian}))
+(def any-node (pallet.core/node-spec))
 
 ;; Given node-spec to find a matching image from the provider, we can
 ;; specify a group of 1 and install our ssh-key to a matching user.
 (def debian-group
   (pallet.core/group-spec "hand-pallet"
                           :count 1
-                          :node-spec debian-node
+                          :node-spec any-node
                           :phases {:bootstrap automated-admin-user}))
 
 
